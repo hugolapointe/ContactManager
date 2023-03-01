@@ -2,24 +2,28 @@
 
 namespace ContactManager.Core.Domain.Validators {
     public static class ContactPropertyValidators {
-        public class FirstNameValidator : AbstractValidator<string?> {
+        private const int VALID_NAME_LENGTH_MIN = 3;
+        private const int VALID_NAME_LENGTH_MAX = 30;
+
+        public class FirstNameValidator : AbstractValidator<string> {
+
             public FirstNameValidator() {
                 RuleFor(firstName => firstName)
-                    .NotNull().NotEmpty()
+                    .NotEmpty()
                     .WithMessage("Please provide a First Name.")
-                    .Length(3, 30)
+                    .Length(VALID_NAME_LENGTH_MIN, VALID_NAME_LENGTH_MAX)
                     .WithMessage("Please provide a First Name between 3 and 30 caracters.")
                     .IsValidName()
                     .WithMessage("Please provide a First Name who contains only letters.");
             }
         }
 
-        public class LastNameValidator : AbstractValidator<string?> {
+        public class LastNameValidator : AbstractValidator<string> {
             public LastNameValidator() {
                 RuleFor(firstName => firstName)
-                    .NotNull().NotEmpty()
+                    .NotEmpty()
                     .WithMessage("Please provide a Last Name.")
-                    .Length(3, 30)
+                    .Length(VALID_NAME_LENGTH_MIN, VALID_NAME_LENGTH_MAX)
                     .WithMessage("Please provide a Last Name between 3 and 30 caracters.")
                     .IsValidName()
                     .WithMessage("Please provide a Last Name who contains only letters.");

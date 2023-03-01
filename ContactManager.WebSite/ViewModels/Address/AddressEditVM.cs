@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ContactManager.WebSite.ViewModels.Address {
     public class AddressEditVM {
         [Display(Name = "Street Number")]
-        public int? StreetNumber { get; set; }
+        public int StreetNumber { get; set; }
 
         [Display(Name = "Street Name")]
         public string? StreetName { get; set; }
@@ -24,12 +24,18 @@ namespace ContactManager.WebSite.ViewModels.Address {
                     .SetValidator(new AddressPropertyValidators.StreetNumberValidator());
 
                 RuleFor(vm => vm.StreetName)
+                    .NotNull()
+                    .WithMessage("Please provide a Street Name.")
                     .SetValidator(new AddressPropertyValidators.StreetNameValidator());
 
                 RuleFor(vm => vm.City)
+                    .NotNull()
+                    .WithMessage("Please provide a City Name.")
                     .SetValidator(new AddressPropertyValidators.CityValidator());
 
                 RuleFor(vm => vm.PostalCode)
+                    .NotNull()
+                    .WithMessage("Please provide a Postal Code.")
                     .SetValidator(new AddressPropertyValidators.PostalCodeValidator());
             }
         }

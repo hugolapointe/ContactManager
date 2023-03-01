@@ -1,5 +1,6 @@
 ﻿using ContactManager.Core;
 using ContactManager.Core.Domain.Entities;
+using ContactManager.WebSite.Utilities;
 using ContactManager.WebSite.ViewModels.Contact;
 
 using Microsoft.AspNetCore.Authorization;
@@ -11,12 +12,15 @@ namespace ContactManager.WebSite.Controllers {
     public class ContactController : Controller {
         private readonly ContactManagerContext context;
         private readonly UserManager<User> userManager;
+        private readonly ICheck check;
 
         public ContactController(
             ContactManagerContext context,
-            UserManager<User> userManager) {
+            UserManager<User> userManager,
+            ICheck check) {
             this.context = context;
             this.userManager = userManager;
+            this.check = check;
         }
 
         public async Task<IActionResult> Manage() {
@@ -69,9 +73,8 @@ namespace ContactManager.WebSite.Controllers {
         public IActionResult Edit(Guid id) {
             var toEdit = context.Contacts.Find(id);
 
-            if (toEdit is null) {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
+            check.IsNotNull(toEdit, "Contact not found.");
+            check.IsOwnedByCurrentUser(toEdit, User);
 
             var vm = new ContactEditVM() {
                 FirstName = toEdit.FirstName,
@@ -92,9 +95,8 @@ namespace ContactManager.WebSite.Controllers {
 
             var toEdit = context.Contacts.Find(id);
 
-            if (toEdit is null) {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
+            check.IsNotNull(toEdit, "Contact not found.");
+            check.IsOwnedByCurrentUser(toEdit, User);
 
             toEdit.FirstName = vm.FirstName.Trim();
             toEdit.LastName = vm.LastName.Trim();
@@ -107,9 +109,8 @@ namespace ContactManager.WebSite.Controllers {
         public IActionResult Remove(Guid id) {
             var toRemove = context.Contacts.Find(id);
 
-            if (toRemove is null) {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
+            check.IsNotNull(toRemove, "Contact not found.");
+            check.IsOwnedByCurrentUser(toRemove, User);
 
             context.Contacts.Remove(toRemove);
             context.SaveChanges();

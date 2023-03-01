@@ -23,12 +23,18 @@ namespace ContactManager.WebSite.ViewModels.Account {
         public class Validator : AbstractValidator<RegisterVM> {
             public Validator() {
                 RuleFor(x => x.UserName)
+                    .NotNull()
+                    .WithMessage("Please provide a UserName.")
                     .SetValidator(new IdentityValidators.UsernameValidator());
 
                 RuleFor(vm => vm.Password)
+                    .NotNull()
+                    .WithMessage("Please provide a Password.")
                     .SetValidator(new IdentityValidators.PasswordValidator());
 
                 RuleFor(vm => vm.PasswordConfirmation)
+                    .NotNull()
+                    .WithMessage("Please provide a Password Confirmation.")
                     .Equal(vm => vm.Password)
                     .WithMessage("The password and confirmation password do not match.");
 

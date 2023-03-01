@@ -1,11 +1,11 @@
 using ContactManager.Core;
 using ContactManager.Core.Domain.Entities;
+using ContactManager.WebSite.Utilities;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +21,8 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>()
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+builder.Services.AddScoped<ICheck, Check>();
 
 var app = builder.Build();
 

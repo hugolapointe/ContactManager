@@ -10,20 +10,20 @@ namespace ContactManager.Core.Domain.Validators {
         private const string REGEX_DIGIT = @"[0-9]";
         private const string REGEX_SPACE = @"[^\s]";
 
-        public class UsernameValidator : AbstractValidator<string?> {
+        public class UsernameValidator : AbstractValidator<string> {
             public UsernameValidator() {
                 RuleFor(userName => userName)
-                    .NotNull().NotEmpty()
+                    .NotEmpty()
                     .WithMessage("The UserName cannot be empty.")
                     .Matches(REGEX_USERNAME)
                     .WithMessage("The UserName contains invalid characters.");
             }
         }
 
-        public class PasswordValidator : AbstractValidator<string?> {
+        public class PasswordValidator : AbstractValidator<string> {
             public PasswordValidator() {
                 RuleFor(password => password)
-                    .NotNull().NotEmpty()
+                    .NotEmpty()
                     .WithMessage("The Password cannot be empty.")
                     .MinimumLength(6)
                     .WithMessage("The Password must have at least 6 characters.")
