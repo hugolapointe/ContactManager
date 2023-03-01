@@ -59,9 +59,9 @@ namespace ContactManager.WebSite.Controllers {
             };
             newContact.Addresses.Add(new Address() {
                 StreetNumber = vm.Address_StreetNumber,
-                StreetName = vm.Address_StreetName.Trim(),
-                CityName = vm.Address_CityName.Trim(),
-                PostalCode = vm.Address_PostalCode.Trim(),
+                StreetName = vm.Address_StreetName,
+                CityName = vm.Address_CityName,
+                PostalCode = vm.Address_PostalCode,
             });
 
             context.Contacts.Add(newContact);
