@@ -30,9 +30,9 @@
                 <label asp-for="PasswordConfirmation" class="control-label"></label>
                 <input asp-for="PasswordConfirmation" class="form-control" />
                 <span asp-validation-for="PasswordConfirmation" class="text-danger"></span>
-                <div class="form-group form-check m-2">
+                <div class="form-group">
                 <span asp-validation-for="TermsAccepted" class="text-danger"></span>
-                    <label class="form-check-label">
+                    <label class="form-check-label form-check m-2">
                         <input class="form-check-input" asp-for="TermsAccepted" /> @Html.DisplayNameFor(model => model.TermsAccepted)
                     </label>
                 </div>

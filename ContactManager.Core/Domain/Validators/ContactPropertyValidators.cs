@@ -2,7 +2,7 @@
 
 namespace ContactManager.Core.Domain.Validators {
     public static class ContactPropertyValidators {
-        public class FirstNameValidator : AbstractValidator<string> {
+        public class FirstNameValidator : AbstractValidator<string?> {
             public FirstNameValidator() {
                 RuleFor(firstName => firstName)
                     .NotNull().NotEmpty()
@@ -14,7 +14,7 @@ namespace ContactManager.Core.Domain.Validators {
             }
         }
 
-        public class LastNameValidator : AbstractValidator<string> {
+        public class LastNameValidator : AbstractValidator<string?> {
             public LastNameValidator() {
                 RuleFor(firstName => firstName)
                     .NotNull().NotEmpty()

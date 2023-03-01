@@ -7,10 +7,10 @@ using System.ComponentModel.DataAnnotations;
 namespace ContactManager.WebSite.ViewModels.Contact {
     public class ContactEditVM {
         [Display(Name = "First Name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]

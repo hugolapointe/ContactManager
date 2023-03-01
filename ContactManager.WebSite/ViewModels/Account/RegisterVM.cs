@@ -7,15 +7,15 @@ using System.ComponentModel.DataAnnotations;
 namespace ContactManager.WebSite.ViewModels.Account {
     public class RegisterVM {
         [Display(Name = "UserName")]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Display(Name = "Password Confirmation")]
         [DataType(DataType.Password)]
-        public string PasswordConfirmation { get; set; }
+        public string? PasswordConfirmation { get; set; }
 
         [Display(Name = "Do you accept the terms?")]
         public bool TermsAccepted { get; set; } = false;

@@ -8,7 +8,7 @@ namespace ContactManager.Core.Domain.Validators {
 
         private const string REGEX_POSTAL_CODE = @"^[A-Z]\d[A-Z] ?\d[A-Z]\d$";
 
-        public class StreetNumberValidator : AbstractValidator<int> {
+        public class StreetNumberValidator : AbstractValidator<int?> {
             public StreetNumberValidator() {
                 RuleFor(streetNumber => streetNumber)
                     .NotNull().NotEmpty()
@@ -18,7 +18,7 @@ namespace ContactManager.Core.Domain.Validators {
             }
         }
 
-        public class StreetNameValidator : AbstractValidator<string> {
+        public class StreetNameValidator : AbstractValidator<string?> {
             public StreetNameValidator() {
                 RuleFor(streetName => streetName)
                     .NotNull().NotEmpty()
@@ -30,7 +30,7 @@ namespace ContactManager.Core.Domain.Validators {
             }
         }
 
-        public class CityValidator : AbstractValidator<string> {
+        public class CityValidator : AbstractValidator<string?> {
             public CityValidator() {
                 RuleFor(city => city)
                     .NotNull().NotEmpty()
@@ -42,7 +42,7 @@ namespace ContactManager.Core.Domain.Validators {
             }
         }
 
-        public class PostalCodeValidator : AbstractValidator<string> {
+        public class PostalCodeValidator : AbstractValidator<string?> {
             public PostalCodeValidator() {
                 RuleFor(postalCode => postalCode)
                     .NotNull().NotEmpty()

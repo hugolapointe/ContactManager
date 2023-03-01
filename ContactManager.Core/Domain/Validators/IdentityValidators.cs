@@ -10,7 +10,7 @@ namespace ContactManager.Core.Domain.Validators {
         private const string REGEX_DIGIT = @"[0-9]";
         private const string REGEX_SPACE = @"[^\s]";
 
-        public class UsernameValidator : AbstractValidator<string> {
+        public class UsernameValidator : AbstractValidator<string?> {
             public UsernameValidator() {
                 RuleFor(userName => userName)
                     .NotNull().NotEmpty()
@@ -20,7 +20,7 @@ namespace ContactManager.Core.Domain.Validators {
             }
         }
 
-        public class PasswordValidator : AbstractValidator<string> {
+        public class PasswordValidator : AbstractValidator<string?> {
             public PasswordValidator() {
                 RuleFor(password => password)
                     .NotNull().NotEmpty()

@@ -7,16 +7,16 @@ using System.ComponentModel.DataAnnotations;
 namespace ContactManager.WebSite.ViewModels {
     public class AddressCreateVM {
         [Display(Name = "Street Number")]
-        public int StreetNumber { get; set; }
+        public int? StreetNumber { get; set; }
 
         [Display(Name = "Street Name")]
-        public string StreetName { get; set; }
+        public string? StreetName { get; set; }
 
         [Display(Name = "City")]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [Display(Name = "Postal Code")]
-        public string PostalCode { get; set; }
+        public string? PostalCode { get; set; }
 
         public class Validator : AbstractValidator<AddressCreateVM> {
             public Validator() {

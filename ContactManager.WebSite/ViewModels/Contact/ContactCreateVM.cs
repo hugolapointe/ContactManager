@@ -7,26 +7,26 @@ using System.ComponentModel.DataAnnotations;
 namespace ContactManager.WebSite.ViewModels.Contact {
     public class ContactCreateVM {
         [Display(Name = "First Name")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         [Display(Name = "Date Of Birth")]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name = "Street Number")]
-        public int Address_StreetNumber { get; set; }
+        public int? Address_StreetNumber { get; set; }
 
         [Display(Name = "Street Name")]
-        public string Address_StreetName { get; set; }
+        public string? Address_StreetName { get; set; }
 
         [Display(Name = "City")]
-        public string Address_City { get; set; }
+        public string? Address_City { get; set; }
 
         [Display(Name = "Postal Code")]
-        public string Address_PostalCode { get; set; }
+        public string? Address_PostalCode { get; set; }
 
         [Display(Name ="Terms Accepted?")]
         public bool TermsAccepted { get; set; } = false;
