@@ -1,0 +1,79 @@
+﻿@model ContactCreateVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create a new Contact</h1>
+
+<div class="mt-2 mb-2">
+    @Html.ActionLink("Back", "Manage",
+        new { contactId = @ViewBag.contactId }, new { @class = "btn btn-secondary" })
+</div>
+
+<form asp-action="Create">
+    <h4 class="mt-2">Contact Information</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mt-2">Default Address Information</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Address_StreetNumber" class="control-label"></label>
+                <input asp-for="Address_StreetNumber" class="form-control" />
+                <span asp-validation-for="Address_StreetNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address_StreetName" class="control-label"></label>
+                <input asp-for="Address_StreetName" class="form-control" />
+                <span asp-validation-for="Address_StreetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address_City" class="control-label"></label>
+                <input asp-for="Address_City" class="form-control" />
+                <span asp-validation-for="Address_City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address_PostalCode" class="control-label"></label>
+                <input asp-for="Address_PostalCode" class="form-control" />
+                <span asp-validation-for="Address_PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check m-2">
+                <span asp-validation-for="TermsAccepted" class="text-danger"></span>
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TermsAccepted" /> @Html.DisplayNameFor(model => model.TermsAccepted)
+                </label>
+            </div>
+            <div class="form-group mt-2 mb-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
