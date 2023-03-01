@@ -8,7 +8,7 @@ namespace ContactManager.Core.Domain.Entities {
 
         public int StreetNumber { get; set; }
         public string StreetName { get; set; }
-        public string City { get; set; }
+        public string CityName { get; set; }
         public string PostalCode { get; set; }
 
 

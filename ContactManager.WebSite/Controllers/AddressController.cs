@@ -39,7 +39,7 @@ namespace ContactManager.WebSite.Controllers {
                     Id = address.Id,
                     StreetNumber = address.StreetNumber,
                     StreetName = address.StreetName,
-                    City = address.City,
+                    City = address.CityName,
                     PostalCode = address.PostalCode,
                 });
 
@@ -71,9 +71,9 @@ namespace ContactManager.WebSite.Controllers {
 
             contact.Addresses.Add(new Address() {
                 StreetNumber = vm.StreetNumber,
-                StreetName = vm.StreetName.Trim(),
-                City = vm.City.Trim(),
-                PostalCode = vm.PostalCode.Trim(),
+                StreetName = vm.StreetName,
+                CityName = vm.CityName,
+                PostalCode = vm.PostalCode,
             });
             context.SaveChanges();
 
@@ -94,7 +94,7 @@ namespace ContactManager.WebSite.Controllers {
             var vm = new AddressEditVM() {
                 StreetNumber = toEdit.StreetNumber,
                 StreetName = toEdit.StreetName,
-                City = toEdit.City,
+                CityName = toEdit.CityName,
                 PostalCode = toEdit.PostalCode,
             };
 
@@ -127,9 +127,9 @@ namespace ContactManager.WebSite.Controllers {
             check.IsOwnedByCurrentUser(contact, User);
 
             toEdit.StreetNumber = vm.StreetNumber;
-            toEdit.StreetName = vm.StreetName.Trim();
-            toEdit.City = vm.City.Trim();
-            toEdit.PostalCode = vm.PostalCode.Trim();
+            toEdit.StreetName = vm.StreetName;
+            toEdit.CityName = vm.CityName;
+            toEdit.PostalCode = vm.PostalCode;
             context.SaveChanges();
 
             return RedirectToAction(nameof(Manage),

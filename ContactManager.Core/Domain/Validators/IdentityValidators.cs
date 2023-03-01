@@ -12,7 +12,7 @@ namespace ContactManager.Core.Domain.Validators {
 
         public class UsernameValidator : AbstractValidator<string> {
             public UsernameValidator() {
-                RuleFor(userName => userName)
+                Transform(userName => userName, username => username.Trim())
                     .NotEmpty()
                     .WithMessage("The UserName cannot be empty.")
                     .Matches(REGEX_USERNAME)

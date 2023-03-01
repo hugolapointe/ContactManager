@@ -54,7 +54,7 @@ namespace ContactManager.Core.Data {
                 Id = Guid.NewGuid(),
                 StreetNumber = streetNumber,
                 StreetName = streetName,
-                City = city,
+                CityName = city,
                 PostalCode = postalCode
             };
             builder.Entity<Address>().HasData(newAddress);

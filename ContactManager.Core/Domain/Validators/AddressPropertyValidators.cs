@@ -22,7 +22,7 @@ namespace ContactManager.Core.Domain.Validators {
 
         public class StreetNameValidator : AbstractValidator<string> {
             public StreetNameValidator() {
-                RuleFor(streetName => streetName)
+                Transform(streetName => streetName, streetName => streetName.Trim())
                     .NotEmpty()
                     .WithMessage("Please provide a Street Name.")
                     .Length(VALID_NAME_LENGTH_MIN, VALID_NAME_LENGTH_MAX)
@@ -32,9 +32,9 @@ namespace ContactManager.Core.Domain.Validators {
             }
         }
 
-        public class CityValidator : AbstractValidator<string> {
-            public CityValidator() {
-                RuleFor(city => city)
+        public class CityNameValidator : AbstractValidator<string> {
+            public CityNameValidator() {
+                Transform(cityName => cityName, cityName => cityName.Trim())
                     .NotEmpty()
                     .WithMessage("Please provide a City Name.")
                     .Length(VALID_NAME_LENGTH_MIN, VALID_NAME_LENGTH_MAX)
@@ -46,7 +46,7 @@ namespace ContactManager.Core.Domain.Validators {
 
         public class PostalCodeValidator : AbstractValidator<string> {
             public PostalCodeValidator() {
-                RuleFor(postalCode => postalCode)
+                Transform(postalCode => postalCode, postalCode => postalCode.Trim().ToUpper())
                     .NotEmpty()
                     .WithMessage("Please provide a Postal Code.")
                     .Matches(REGEX_POSTAL_CODE, REGEX_OPTIONS)

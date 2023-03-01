@@ -13,7 +13,7 @@ namespace ContactManager.WebSite.ViewModels.Address {
         public string? StreetName { get; set; }
 
         [Display(Name = "City")]
-        public string? City { get; set; }
+        public string? CityName { get; set; }
 
         [Display(Name = "Postal Code")]
         public string? PostalCode { get; set; }
@@ -28,10 +28,10 @@ namespace ContactManager.WebSite.ViewModels.Address {
                     .WithMessage("Please provide a Street Name.")
                     .SetValidator(new AddressPropertyValidators.StreetNameValidator());
 
-                RuleFor(vm => vm.City)
+                RuleFor(vm => vm.CityName)
                     .NotNull()
                     .WithMessage("Please provide a City Name.")
-                    .SetValidator(new AddressPropertyValidators.CityValidator());
+                    .SetValidator(new AddressPropertyValidators.CityNameValidator());
 
                 RuleFor(vm => vm.PostalCode)
                     .NotNull()

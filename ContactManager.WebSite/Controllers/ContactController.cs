@@ -52,15 +52,15 @@ namespace ContactManager.WebSite.Controllers {
             }
 
             var newContact = new Contact() {
-                FirstName = vm.FirstName.Trim(),
-                LastName = vm.LastName.Trim(),
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
                 DateOfBirth = vm.DateOfBirth,
                 OwnerId = Guid.Parse(userManager.GetUserId(User))
             };
             newContact.Addresses.Add(new Address() {
                 StreetNumber = vm.Address_StreetNumber,
                 StreetName = vm.Address_StreetName.Trim(),
-                City = vm.Address_City.Trim(),
+                CityName = vm.Address_CityName.Trim(),
                 PostalCode = vm.Address_PostalCode.Trim(),
             });
 
@@ -98,8 +98,8 @@ namespace ContactManager.WebSite.Controllers {
             check.IsNotNull(toEdit, "Contact not found.");
             check.IsOwnedByCurrentUser(toEdit, User);
 
-            toEdit.FirstName = vm.FirstName.Trim();
-            toEdit.LastName = vm.LastName.Trim();
+            toEdit.FirstName = vm.FirstName;
+            toEdit.LastName = vm.LastName;
             toEdit.DateOfBirth = vm.DateOfBirth;
             context.SaveChanges();
 

@@ -8,7 +8,7 @@ namespace ContactManager.Core.Domain.Validators {
         public class FirstNameValidator : AbstractValidator<string> {
 
             public FirstNameValidator() {
-                RuleFor(firstName => firstName)
+                Transform(firstName => firstName, firstName => firstName.Trim())
                     .NotEmpty()
                     .WithMessage("Please provide a First Name.")
                     .Length(VALID_NAME_LENGTH_MIN, VALID_NAME_LENGTH_MAX)
@@ -20,7 +20,7 @@ namespace ContactManager.Core.Domain.Validators {
 
         public class LastNameValidator : AbstractValidator<string> {
             public LastNameValidator() {
-                RuleFor(firstName => firstName)
+                Transform(lastName => lastName, lastName => lastName.Trim())
                     .NotEmpty()
                     .WithMessage("Please provide a Last Name.")
                     .Length(VALID_NAME_LENGTH_MIN, VALID_NAME_LENGTH_MAX)
