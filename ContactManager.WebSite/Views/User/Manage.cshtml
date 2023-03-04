@@ -1,0 +1,50 @@
+﻿@model IEnumerable<UserDetailsVM>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<h1>Manage Users</h1>
+
+<div class="mt-2 mb-2">
+    @Html.ActionLink("Create", "Create", 
+        new { }, new { @class = "btn btn-primary" })
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleNames)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleNames)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit",
+                        new { id = item.Id }, new { @class ="btn btn-primary" })
+                    @Html.ActionLink("Remove", "Remove",
+                        new { id = item.Id }, new { @class ="btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

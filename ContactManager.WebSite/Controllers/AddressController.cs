@@ -13,28 +13,26 @@ namespace ContactManager.WebSite.Controllers {
     public class AddressController : Controller {
         private readonly ContactManagerContext context;
         private readonly UserManager<User> userManager;
-        private readonly ICheck check;
+        private readonly DomainAsserts asserts;
 
         public AddressController(
             ContactManagerContext context,
             UserManager<User> userManager,
-            ICheck check) {
+            DomainAsserts asserts) {
             this.context = context;
             this.userManager = userManager;
-            this.check = check;
+            this.asserts = asserts;
         }
 
         public IActionResult Manage(Guid contactId) {
             var contact = context.Contacts.Find(contactId);
 
-            check.IsNotNull(contact, nameof(contact), "Contact not found.");
-            check.IsOwnedByCurrentUser(contact, User);
+            asserts.Exists(contact, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(contact, User);
 
-            context.Entry(contact)
-                .Collection(contact => contact.Addresses)
-                .Load();
+            context.Entry(contact).Collection(c => c.Addresses).Load();
 
-            var vm = contact.Addresses
+            var addresses = contact.Addresses
                 .Select(address => new AddressDetailsVM() {
                     Id = address.Id,
                     StreetNumber = address.StreetNumber,
@@ -44,14 +42,14 @@ namespace ContactManager.WebSite.Controllers {
                 });
 
             ViewBag.ContactId = contactId;
-            return View(vm);
+            return View(addresses);
         }
 
         public IActionResult Create(Guid contactId) {
             var contact = context.Contacts.Find(contactId);
 
-            check.IsNotNull(contact, nameof(contact), "Contact not found.");
-            check.IsOwnedByCurrentUser(contact, User);
+            asserts.Exists(contact, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(contact, User);
 
             ViewBag.ContactId = contactId;
             return View();
@@ -66,15 +64,16 @@ namespace ContactManager.WebSite.Controllers {
 
             var contact = context.Contacts.Find(contactId);
 
-            check.IsNotNull(contact, nameof(contact), "Contact not found.");
-            check.IsOwnedByCurrentUser(contact, User);
+            asserts.Exists(contact, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(contact, User);
 
-            contact.Addresses.Add(new Address() {
+            Address toAdd = new Address() {
                 StreetNumber = vm.StreetNumber,
                 StreetName = vm.StreetName,
                 CityName = vm.CityName,
                 PostalCode = vm.PostalCode,
-            });
+            };
+            contact.Addresses.Add(toAdd);
             context.SaveChanges();
 
             return RedirectToAction(nameof(Manage), new { contactId });
@@ -83,13 +82,12 @@ namespace ContactManager.WebSite.Controllers {
         public IActionResult Edit(Guid id) {
             var toEdit = context.Addresses.Find(id);
 
-            check.IsNotNull(toEdit, nameof(toEdit), "Address not found.");
+            asserts.Exists(toEdit, "Address not found.");
 
-            context.Entry(toEdit)
-                .Reference(address => address.Contact)
-                .Load();
+            context.Entry(toEdit).Reference(a => a.Contact).Load();
 
-            check.IsOwnedByCurrentUser(toEdit.Contact, User);
+            asserts.Exists(toEdit.Contact, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(toEdit.Contact, User);
 
             var vm = new AddressEditVM() {
                 StreetNumber = toEdit.StreetNumber,
@@ -99,7 +97,7 @@ namespace ContactManager.WebSite.Controllers {
             };
 
             ViewBag.Id = id;
-            ViewBag.ContactId = toEdit.Contact?.Id;
+            ViewBag.ContactId = toEdit.Contact.Id;
             return View(vm);
         }
 
@@ -107,9 +105,7 @@ namespace ContactManager.WebSite.Controllers {
         public IActionResult Edit(Guid id, AddressEditVM vm) {
             var toEdit = context.Addresses.Find(id);
 
-            if (toEdit is null) {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
+            asserts.Exists(toEdit, "Address not found.");
 
             if (!ModelState.IsValid) {
                 ViewBag.Id = id;
@@ -117,14 +113,10 @@ namespace ContactManager.WebSite.Controllers {
                 return View(vm);
             }
             
-            context.Entry(toEdit)
-                .Reference(address => address.Contact)
-                .Load();
+            context.Entry(toEdit).Reference(a => a.Contact).Load();
 
-            var contact = toEdit.Contact;
-
-            check.IsNotNull(contact, nameof(contact), "Contact not found.");
-            check.IsOwnedByCurrentUser(contact, User);
+            asserts.Exists(toEdit.Contact, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(toEdit.Contact, User);
 
             toEdit.StreetNumber = vm.StreetNumber;
             toEdit.StreetName = vm.StreetName;
@@ -133,25 +125,24 @@ namespace ContactManager.WebSite.Controllers {
             context.SaveChanges();
 
             return RedirectToAction(nameof(Manage),
-                new { contactId = toEdit.Contact?.Id });
+                new { contactId = toEdit.Contact.Id });
         }
 
         public IActionResult Remove(Guid id) {
             var toRemove = context.Addresses.Find(id);
 
-            check.IsNotNull(toRemove, nameof(toRemove), "Address not found.");
+            asserts.Exists(toRemove, "Address not found.");
 
-            context.Entry(toRemove)
-                .Reference(address => address.Contact)
-                .Load();
+            context.Entry(toRemove).Reference(a => a.Contact).Load();
 
-            check.IsOwnedByCurrentUser(toRemove.Contact, User);
+            asserts.Exists(toRemove.Contact, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(toRemove.Contact, User);
 
             context.Addresses.Remove(toRemove);
             context.SaveChanges();
 
             return RedirectToAction(nameof(Manage),
-                new { contactId = toRemove.Contact?.Id });
+                new { contactId = toRemove.Contact.Id });
         }
     }
 }

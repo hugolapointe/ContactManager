@@ -1,0 +1,52 @@
+﻿@model UserCreateVM
+
+@{
+    ViewData["Title"] = "User Creation";
+}
+
+<h1>User Creation</h1>
+
+<div class="mt-2 mb-2">
+    @Html.ActionLink("Manage", "Manage",
+    new {}, new { @class = "btn btn-secondary" })
+</div>
+
+<form asp-action="Create">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RoleNames"></label>
+                <select asp-for="RoleNames" asp-items="@(new SelectList(ViewBag.Roles, "Name", "Name"))" class="form-control" multiple></select>
+                <span asp-validation-for="RoleNames"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PasswordConfirmation"></label>
+                <input asp-for="PasswordConfirmation" class="form-control" type="password" />
+                <span asp-validation-for="PasswordConfirmation"></span>
+            </div>
+
+            <div class="form-group mt-2 mb-2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -12,23 +12,21 @@ namespace ContactManager.WebSite.Controllers {
     public class ContactController : Controller {
         private readonly ContactManagerContext context;
         private readonly UserManager<User> userManager;
-        private readonly ICheck check;
+        private readonly DomainAsserts asserts;
 
         public ContactController(
             ContactManagerContext context,
             UserManager<User> userManager,
-            ICheck check) {
+            DomainAsserts asserts) {
             this.context = context;
             this.userManager = userManager;
-            this.check = check;
+            this.asserts = asserts;
         }
 
         public async Task<IActionResult> Manage() {
             var user = await userManager.GetUserAsync(User);
 
-            context.Entry(user)
-                .Collection(user => user.Contacts)
-                .Load();
+            context.Entry(user).Collection(u => u.Contacts).Load();
 
             var contacts = user.Contacts
                 .Select(contact => new ContactDetailsVM() {
@@ -51,20 +49,20 @@ namespace ContactManager.WebSite.Controllers {
                 return View(vm);
             }
 
-            var newContact = new Contact() {
+            var toAdd = new Contact() {
                 FirstName = vm.FirstName,
                 LastName = vm.LastName,
                 DateOfBirth = vm.DateOfBirth,
                 OwnerId = Guid.Parse(userManager.GetUserId(User))
             };
-            newContact.Addresses.Add(new Address() {
+            toAdd.Addresses.Add(new Address() {
                 StreetNumber = vm.Address_StreetNumber,
                 StreetName = vm.Address_StreetName,
                 CityName = vm.Address_CityName,
                 PostalCode = vm.Address_PostalCode,
             });
 
-            context.Contacts.Add(newContact);
+            context.Contacts.Add(toAdd);
             context.SaveChanges();
 
             return RedirectToAction(nameof(Manage));
@@ -73,8 +71,8 @@ namespace ContactManager.WebSite.Controllers {
         public IActionResult Edit(Guid id) {
             var toEdit = context.Contacts.Find(id);
 
-            check.IsNotNull(toEdit, "Contact not found.");
-            check.IsOwnedByCurrentUser(toEdit, User);
+            asserts.Exists(toEdit, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(toEdit, User);
 
             var vm = new ContactEditVM() {
                 FirstName = toEdit.FirstName,
@@ -95,8 +93,8 @@ namespace ContactManager.WebSite.Controllers {
 
             var toEdit = context.Contacts.Find(id);
 
-            check.IsNotNull(toEdit, "Contact not found.");
-            check.IsOwnedByCurrentUser(toEdit, User);
+            asserts.Exists(toEdit, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(toEdit, User);
 
             toEdit.FirstName = vm.FirstName;
             toEdit.LastName = vm.LastName;
@@ -109,8 +107,8 @@ namespace ContactManager.WebSite.Controllers {
         public IActionResult Remove(Guid id) {
             var toRemove = context.Contacts.Find(id);
 
-            check.IsNotNull(toRemove, "Contact not found.");
-            check.IsOwnedByCurrentUser(toRemove, User);
+            asserts.Exists(toRemove, "Contact not found.");
+            asserts.IsOwnedByCurrentUser(toRemove, User);
 
             context.Contacts.Remove(toRemove);
             context.SaveChanges();

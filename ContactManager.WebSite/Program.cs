@@ -22,7 +22,7 @@ builder.Services.AddIdentity<User, IdentityRole<Guid>>()
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-builder.Services.AddScoped<ICheck, Check>();
+builder.Services.AddScoped<DomainAsserts>();
 
 var app = builder.Build();
 
