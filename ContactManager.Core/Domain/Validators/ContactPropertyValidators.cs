@@ -30,7 +30,7 @@ namespace ContactManager.Core.Domain.Validators {
             }
         }
 
-        public class BirthDateValidator : AbstractValidator<DateTime> {
+        public class BirthDateValidator : AbstractValidator<DateTime?> {
             public BirthDateValidator() {
                 RuleFor(birthDate => birthDate)
                     .NotNull().NotEmpty()

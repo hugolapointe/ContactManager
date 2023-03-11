@@ -5,73 +5,88 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ContactManager.WebSite.Controllers {
-    [Authorize]
-    public class AccountController : Controller {
-        private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+namespace ContactManager.WebSite.Controllers;
 
-        public AccountController(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager) {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
-        }
+[Authorize]
+public class AccountController : Controller {
+    private readonly UserManager<User> userManager;
+    private readonly SignInManager<User> signInManager;
 
-        [AllowAnonymous]
-        public IActionResult LogIn(string? returnUrl = "") {
+    public AccountController(
+        UserManager<User> userManager,
+        SignInManager<User> signInManager) {
+        this.userManager = userManager;
+        this.signInManager = signInManager;
+    }
+
+    [AllowAnonymous]
+    public IActionResult LogIn(string? returnUrl = "") {
+        ViewBag.ReturnUrl = returnUrl;
+        return View();
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> LogIn(LogInVM vm, string? returnUrl = "") {
+        if (!ModelState.IsValid) {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(vm);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> LogIn(LogInVM vm, string? returnUrl = "") {
-            if (!ModelState.IsValid) {
-                ViewBag.ReturnUrl = returnUrl;
-                return View(vm);
-            }
+        try {
             var result = await signInManager.PasswordSignInAsync(
                 vm.UserName, vm.Password, vm.RememberMe, false);
 
             if (!result.Succeeded) {
                 ModelState.AddModelError(string.Empty, "Log In Failed. Please try again.");
+                ViewBag.ReturnUrl = returnUrl;
                 return View(vm);
             }
 
-            return Redirect(returnUrl ?? Url.Action("Home", "Index"));
+        } catch {
+            ModelState.AddModelError(string.Empty, "Something went wrong. Please try again.");
+            ViewBag.ReturnUrl = returnUrl;
+            return View(vm);
         }
 
-        [AllowAnonymous]
-        public IActionResult Register() {
-            return View();
+        return Redirect(returnUrl ?? Url.Action("Home", "Index"));
+    }
+
+    [AllowAnonymous]
+    public IActionResult Register() {
+        return View();
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> Register(RegisterVM vm) {
+        if (!ModelState.IsValid) {
+            return View(vm);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<IActionResult> Register(RegisterVM vm) {
-            if (!ModelState.IsValid) {
-                return View(vm);
-            }
-
+        try {
             var newUser = new User(vm.UserName);
             var result = await userManager.CreateAsync(newUser);
 
             if (!result.Succeeded) {
-                ModelState.AddModelError(string.Empty, "Unable to create a new User.");
+                ModelState.AddModelError(string.Empty, "Unable to register a new user.");
                 return View(vm);
             }
 
             await signInManager.SignInAsync(newUser, true);
 
-            return RedirectToAction("Manage", "Contact");
+        } catch {
+            ModelState.AddModelError(string.Empty, "Something went wrong. Please try again.");
+            return View(vm);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> LogOut() {
-            await signInManager.SignOutAsync();
+        return RedirectToAction("Manage", "Contact");
+    }
 
-            return RedirectToAction("Index", "Home");
-        }
+    [HttpPost]
+    public async Task<IActionResult> LogOut() {
+        await signInManager.SignOutAsync();
+
+        return RedirectToAction("Index", "Home");
     }
 }

@@ -4,40 +4,40 @@ using FluentValidation;
 
 using System.ComponentModel.DataAnnotations;
 
-namespace ContactManager.WebSite.ViewModels.Address {
-    public class AddressEditVM {
-        [Display(Name = "Street Number")]
-        public int StreetNumber { get; set; }
+namespace ContactManager.WebSite.ViewModels.Address;
 
-        [Display(Name = "Street Name")]
-        public string? StreetName { get; set; }
+public class AddressEditVM {
+    [Display(Name = "Street Number")]
+    public int StreetNumber { get; set; }
 
-        [Display(Name = "City")]
-        public string? CityName { get; set; }
+    [Display(Name = "Street Name")]
+    public string? StreetName { get; set; }
 
-        [Display(Name = "Postal Code")]
-        public string? PostalCode { get; set; }
+    [Display(Name = "City")]
+    public string? CityName { get; set; }
 
-        public class Validator : AbstractValidator<AddressEditVM> {
-            public Validator() {
-                RuleFor(vm => vm.StreetNumber)
-                    .SetValidator(new AddressPropertyValidators.StreetNumberValidator());
+    [Display(Name = "Postal Code")]
+    public string? PostalCode { get; set; }
 
-                RuleFor(vm => vm.StreetName)
-                    .NotNull()
+    public class Validator : AbstractValidator<AddressEditVM> {
+        public Validator() {
+            RuleFor(vm => vm.StreetNumber)
+                .SetValidator(new AddressPropertyValidators.StreetNumberValidator());
+
+            RuleFor(vm => vm.StreetName)
+                .NotNull()
                     .WithMessage("Please provide a Street Name.")
-                    .SetValidator(new AddressPropertyValidators.StreetNameValidator());
+                .SetValidator(new AddressPropertyValidators.StreetNameValidator());
 
-                RuleFor(vm => vm.CityName)
-                    .NotNull()
+            RuleFor(vm => vm.CityName)
+                .NotNull()
                     .WithMessage("Please provide a City Name.")
-                    .SetValidator(new AddressPropertyValidators.CityNameValidator());
+                .SetValidator(new AddressPropertyValidators.CityNameValidator());
 
-                RuleFor(vm => vm.PostalCode)
-                    .NotNull()
+            RuleFor(vm => vm.PostalCode)
+                .NotNull()
                     .WithMessage("Please provide a Postal Code.")
-                    .SetValidator(new AddressPropertyValidators.PostalCodeValidator());
-            }
+                .SetValidator(new AddressPropertyValidators.PostalCodeValidator());
         }
     }
 }
