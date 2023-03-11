@@ -710,6 +710,9 @@ FodyWeavers.xsd
 
 # VS Code files for those working on multiple tools
 
+# Migration
+**/Migrations
+
 # Local History for Visual Studio Code
 
 # Windows Installer files from build outputs
