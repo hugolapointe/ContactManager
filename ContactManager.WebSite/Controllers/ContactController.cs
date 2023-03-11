@@ -7,113 +7,113 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ContactManager.WebSite.Controllers {
-    [Authorize]
-    public class ContactController : Controller {
-        private readonly ContactManagerContext context;
-        private readonly UserManager<User> userManager;
-        private readonly DomainAsserts asserts;
+namespace ContactManager.WebSite.Controllers;
 
-        public ContactController(
-            ContactManagerContext context,
-            UserManager<User> userManager,
-            DomainAsserts asserts) {
-            this.context = context;
-            this.userManager = userManager;
-            this.asserts = asserts;
-        }
+[Authorize]
+public class ContactController : Controller {
+    private readonly ContactManagerContext context;
+    private readonly UserManager<User> userManager;
+    private readonly DomainAsserts asserts;
 
-        public async Task<IActionResult> Manage() {
-            var user = await userManager.GetUserAsync(User);
+    public ContactController(
+        ContactManagerContext context,
+        UserManager<User> userManager,
+        DomainAsserts asserts) {
+        this.context = context;
+        this.userManager = userManager;
+        this.asserts = asserts;
+    }
 
-            context.Entry(user).Collection(u => u.Contacts).Load();
+    public async Task<IActionResult> Manage() {
+        var user = await userManager.GetUserAsync(User);
 
-            var contacts = user.Contacts
-                .Select(contact => new ContactDetailsVM() {
-                    Id = contact.Id,
-                    FirstName = contact.FirstName,
-                    LastName = contact.LastName,
-                    Age = contact.Age,
-                });
+        context.Entry(user).Collection(u => u.Contacts).Load();
 
-            return View(contacts);
-        }
-
-        public IActionResult Create() {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(ContactCreateVM vm) {
-            if (!ModelState.IsValid) {
-                return View(vm);
-            }
-
-            var toAdd = new Contact() {
-                FirstName = vm.FirstName,
-                LastName = vm.LastName,
-                DateOfBirth = vm.DateOfBirth,
-                OwnerId = Guid.Parse(userManager.GetUserId(User))
-            };
-            toAdd.Addresses.Add(new Address() {
-                StreetNumber = vm.Address_StreetNumber,
-                StreetName = vm.Address_StreetName,
-                CityName = vm.Address_CityName,
-                PostalCode = vm.Address_PostalCode,
+        var contacts = user.Contacts
+            .Select(contact => new ContactDetailsVM() {
+                Id = contact.Id,
+                FirstName = contact.FirstName,
+                LastName = contact.LastName,
+                Age = contact.Age,
             });
 
-            context.Contacts.Add(toAdd);
-            context.SaveChanges();
+        return View(contacts);
+    }
 
-            return RedirectToAction(nameof(Manage));
+    public IActionResult Create() {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(ContactCreateVM vm) {
+        if (!ModelState.IsValid) {
+            return View(vm);
         }
 
-        public IActionResult Edit(Guid id) {
-            var toEdit = context.Contacts.Find(id);
+        var toAdd = new Contact() {
+            FirstName = vm.FirstName,
+            LastName = vm.LastName,
+            DateOfBirth = vm.DateOfBirth.Value,
+        };
+        toAdd.Addresses.Add(new Address() {
+            StreetNumber = vm.Address_StreetNumber,
+            StreetName = vm.Address_StreetName,
+            CityName = vm.Address_CityName,
+            PostalCode = vm.Address_PostalCode,
+        });
 
-            asserts.Exists(toEdit, "Contact not found.");
-            asserts.IsOwnedByCurrentUser(toEdit, User);
+        var user = await userManager.GetUserAsync(User);
+        user.Contacts.Add(toAdd);
+        context.SaveChanges();
 
-            var vm = new ContactEditVM() {
-                FirstName = toEdit.FirstName,
-                LastName = toEdit.LastName,
-                DateOfBirth = toEdit.DateOfBirth,
-            };
+        return RedirectToAction(nameof(Manage));
+    }
 
+    public IActionResult Edit(Guid id) {
+        var toEdit = context.Contacts.Find(id);
+
+        asserts.Exists(toEdit, "Contact not found.");
+        asserts.IsOwnedByCurrentUser(toEdit, User);
+
+        var vm = new ContactEditVM() {
+            FirstName = toEdit.FirstName,
+            LastName = toEdit.LastName,
+            DateOfBirth = toEdit.DateOfBirth,
+        };
+
+        ViewBag.Id = id;
+        return View(vm);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Guid id, ContactEditVM vm) {
+        if (!ModelState.IsValid) {
             ViewBag.Id = id;
             return View(vm);
         }
 
-        [HttpPost]
-        public IActionResult Edit(Guid id, ContactEditVM vm) {
-            if (!ModelState.IsValid) {
-                ViewBag.Id = id;
-                return View(vm);
-            }
+        var toEdit = context.Contacts.Find(id);
 
-            var toEdit = context.Contacts.Find(id);
+        asserts.Exists(toEdit, "Contact not found.");
+        asserts.IsOwnedByCurrentUser(toEdit, User);
 
-            asserts.Exists(toEdit, "Contact not found.");
-            asserts.IsOwnedByCurrentUser(toEdit, User);
+        toEdit.FirstName = vm.FirstName;
+        toEdit.LastName = vm.LastName;
+        toEdit.DateOfBirth = vm.DateOfBirth.Value;
+        context.SaveChanges();
 
-            toEdit.FirstName = vm.FirstName;
-            toEdit.LastName = vm.LastName;
-            toEdit.DateOfBirth = vm.DateOfBirth;
-            context.SaveChanges();
+        return RedirectToAction(nameof(Manage));
+    }
 
-            return RedirectToAction(nameof(Manage));
-        }
+    public IActionResult Remove(Guid id) {
+        var toRemove = context.Contacts.Find(id);
 
-        public IActionResult Remove(Guid id) {
-            var toRemove = context.Contacts.Find(id);
+        asserts.Exists(toRemove, "Contact not found.");
+        asserts.IsOwnedByCurrentUser(toRemove, User);
 
-            asserts.Exists(toRemove, "Contact not found.");
-            asserts.IsOwnedByCurrentUser(toRemove, User);
+        context.Contacts.Remove(toRemove);
+        context.SaveChanges();
 
-            context.Contacts.Remove(toRemove);
-            context.SaveChanges();
-
-            return RedirectToAction(nameof(Manage));
-        }
+        return RedirectToAction(nameof(Manage));
     }
 }
