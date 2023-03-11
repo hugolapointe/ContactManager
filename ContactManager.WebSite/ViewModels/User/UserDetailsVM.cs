@@ -8,7 +8,7 @@ namespace ContactManager.WebSite.ViewModels.User {
         [Display(Name = "UserName")]
         public string UserName { get; set; }
 
-        [Display(Name = "Roles")]
-        public string RoleNames { get; set; }
+        [Display(Name = "Role")]
+        public string RoleName { get; set; }
     }
 }

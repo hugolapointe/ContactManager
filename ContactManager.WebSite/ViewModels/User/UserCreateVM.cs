@@ -9,23 +9,25 @@ namespace ContactManager.WebSite.ViewModels.User {
         [Display(Name = "UserName")]
         public string? UserName { get; set; }
 
-        [Display(Name = "Roles")]
-        public List<string> RoleNames { get; set; } = new();
+        [Display(Name = "Role")]
+        public Guid RoleId { get; set; }
 
         [Display(Name = "Password")]
-        [DataType(DataType.Password)]
         public string? Password { get; set; }
 
         [Display(Name = "Password Confirmation")]
-        [DataType(DataType.Password)]
         public string? PasswordConfirmation { get; set; }
 
         public class Validator : AbstractValidator<UserCreateVM> {
             public Validator() {
-                RuleFor(x => x.UserName)
+                RuleFor(vm => vm.UserName)
                     .NotNull()
                     .WithMessage("Please provide a UserName.")
                     .SetValidator(new IdentityValidators.UsernameValidator());
+
+                RuleFor(vm => vm.RoleId)
+                    .NotEmpty()
+                    .WithMessage("Please provide a RoleId.");
 
                 RuleFor(vm => vm.Password)
                     .NotNull()

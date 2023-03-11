@@ -9,10 +9,11 @@ namespace ContactManager.Core.Data {
 
         public static void Seed(this ModelBuilder builder) {
             var adminRole = AddRole(builder, "Administrator");
+            _ = AddRole(builder, "Utilisateur");
             var hugoUser = AddUser(builder, "hlapointe", "Admin123!");
             addUserToRole(builder, hugoUser, adminRole);
             var cegepAddress = AddAddress(builder, 3000, "Boulevard Boullé", "Saint-Hyacinthe", "J2S 1H9");
-            AddContactWithDefaultAddressToUser(builder, "Sébastien", "Pouliot", cegepAddress, hugoUser);
+            _ = AddContactWithDefaultAddressToUser(builder, "Sébastien", "Pouliot", cegepAddress, hugoUser);
         }
 
         private static void addUserToRole(ModelBuilder builder, User hugoUser, IdentityRole<Guid> adminRole) {

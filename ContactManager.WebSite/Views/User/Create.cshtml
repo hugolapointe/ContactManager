@@ -14,6 +14,7 @@
 <form asp-action="Create">
     <div class="row">
         <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserName"></label>
                 <input asp-for="UserName" class="form-control" />
@@ -21,20 +22,20 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="RoleNames"></label>
-                <select asp-for="RoleNames" asp-items="@(new SelectList(ViewBag.Roles, "Name", "Name"))" class="form-control" multiple></select>
-                <span asp-validation-for="RoleNames"></span>
+                <label asp-for="RoleId"></label>
+                <select asp-for="RoleId" asp-items="@(new SelectList(ViewBag.Roles, "Id", "Name"))" class="form-control"></select>
+                <span asp-validation-for="RoleId"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" type="password" />
+                <input asp-for="Password" class="form-control" value="@Model.Password"/>
                 <span asp-validation-for="Password"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="PasswordConfirmation"></label>
-                <input asp-for="PasswordConfirmation" class="form-control" type="password" />
+                <input asp-for="PasswordConfirmation" class="form-control" value="@Model.PasswordConfirmation"/>
                 <span asp-validation-for="PasswordConfirmation"></span>
             </div>
 

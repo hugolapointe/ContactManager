@@ -1,41 +1,44 @@
 ﻿
 using FluentValidation;
 
-namespace ContactManager.Core.Domain.Validators {
-    public static class IdentityValidators {
+using System.Text.RegularExpressions;
 
-        private const string REGEX_USERNAME = @"[^@\.]";
-        private const string REGEX_UPPERCASE = @"[A-Z]";
-        private const string REGEX_LOWERCASE = @"[a-z]";
-        private const string REGEX_DIGIT = @"[0-9]";
-        private const string REGEX_SPACE = @"[^\s]";
+namespace ContactManager.Core.Domain.Validators;
 
-        public class UsernameValidator : AbstractValidator<string> {
-            public UsernameValidator() {
-                Transform(userName => userName, username => username.Trim())
-                    .NotEmpty()
+public static class IdentityValidators {
+    private const RegexOptions REGEX_OPTIONS = RegexOptions.IgnoreCase | RegexOptions.CultureInvariant;
+
+    private const string USERNAME_REGEX = @"^([a-z0-9_.-])+$";
+    private const string UPPERCASE_REGEX = @"[A-Z]";
+    private const string LOWERCASE_REGEX = @"[a-z]";
+    private const string DIGIT_REGEX = @"[0-9]";
+    private const string SPACE_REGEX = @"[^\s]";
+
+    public class UsernameValidator : AbstractValidator<string> {
+        public UsernameValidator() {
+            Transform(userName => userName, username => username.Trim().ToLower())
+                .NotEmpty()
                     .WithMessage("The UserName cannot be empty.")
-                    .Matches(REGEX_USERNAME)
+                .Matches(USERNAME_REGEX, REGEX_OPTIONS)
                     .WithMessage("The UserName contains invalid characters.");
-            }
         }
+    }
 
-        public class PasswordValidator : AbstractValidator<string> {
-            public PasswordValidator() {
-                RuleFor(password => password)
-                    .NotEmpty()
+    public class PasswordValidator : AbstractValidator<string> {
+        public PasswordValidator() {
+            RuleFor(password => password)
+                .NotEmpty()
                     .WithMessage("The Password cannot be empty.")
-                    .MinimumLength(6)
+                .MinimumLength(8)
                     .WithMessage("The Password must have at least 6 characters.")
-                    .Matches(REGEX_UPPERCASE)
+                .Matches(UPPERCASE_REGEX)
                     .WithMessage("The Password must have at least one uppercase letter.")
-                    .Matches(REGEX_LOWERCASE)
+                .Matches(LOWERCASE_REGEX)
                     .WithMessage("The Password must have at least one lowercase letter.")
-                    .Matches(REGEX_DIGIT)
+                .Matches(DIGIT_REGEX)
                     .WithMessage("The Password must have at least one digit.")
-                    .Matches(REGEX_SPACE)
+                .Matches(SPACE_REGEX)
                     .WithMessage("The Password cannot contain spaces.");
-            }
         }
     }
 }
