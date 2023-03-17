@@ -42,8 +42,8 @@
                     <form asp-action="ResetPassword" asp-route-id="@item.Id" class="d-inline-block">
                         <input type="submit" class="btn btn-secondary" value="Reset Password" />
                     </form>
-                    <form id="delete-form-@item.Id" asp-action="Remove" asp-route-id="@item.Id" class="d-inline-block">
-                        <button type="button" class="btn btn-danger delete-button" data-item-id="@item.Id" data-username="@item.UserName">
+                    <form asp-action="Remove" asp-route-id="@item.Id" class="d-inline-block">
+                        <button type="button" class="btn btn-danger delete-button" data-name="@item.UserName">
                             Remove
                         </button>
                     </form>
@@ -57,13 +57,12 @@
 <script>
     $(function() {
         $('.delete-button').click(function() {
-            const itemId = $(this).data('item-id');
-            const username = $(this).data('username');
+            const name = $(this).data('name') || "this item";
 
-            const message = `Are you sure you want to delete the user ${username}?`;
+            const message = `Are you sure you want to delete ${name}?`;
 
             if(confirm(message)) {
-            $(`#delete-form-${itemId}`).submit();
+                $(this).parent("form").submit();
             }
         });
     });
