@@ -1,4 +1,4 @@
-﻿using ContactManager.Core.Domain.Validators;
+﻿using ContactManager.Core.Domain.Validators.Identity;
 
 using FluentValidation;
 
@@ -20,14 +20,10 @@ public class LogInVM {
     public class Validator : AbstractValidator<LogInVM> {
         public Validator() {
             RuleFor(x => x.UserName)
-                .NotNull()
-                    .WithMessage("Please provide a UserName.")
-                .SetValidator(new IdentityValidators.UsernameValidator());
+                .SetValidator(new UsernameValidator());
 
             RuleFor(vm => vm.Password)
-                .NotNull()
-                    .WithMessage("Please provide a Password.")
-                .SetValidator(new IdentityValidators.PasswordValidator());
+                .SetValidator(new PasswordValidator());
         }
     }
 }

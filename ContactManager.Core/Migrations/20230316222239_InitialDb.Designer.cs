@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ContactManager.Core.Migrations
 {
     [DbContext(typeof(ContactManagerContext))]
-    [Migration("20230301121106_InitialDb")]
+    [Migration("20230316222239_InitialDb")]
     partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace ContactManager.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("City")
+                    b.Property<string>("CityName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -57,9 +57,9 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b6206798-621c-4196-90f3-f2682cb9ecde"),
-                            City = "Saint-Hyacinthe",
-                            ContactId = new Guid("b921da57-5822-48be-9654-8813aa5f5d10"),
+                            Id = new Guid("56fef287-a86e-4bac-9ce8-afd7cb8a0e22"),
+                            CityName = "Saint-Hyacinthe",
+                            ContactId = new Guid("b4b298b5-295f-4e7e-b441-faf642e3be6d"),
                             PostalCode = "J2S 1H9",
                             StreetName = "Boulevard Boullé",
                             StreetNumber = 3000
@@ -95,11 +95,11 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b921da57-5822-48be-9654-8813aa5f5d10"),
+                            Id = new Guid("b4b298b5-295f-4e7e-b441-faf642e3be6d"),
                             DateOfBirth = new DateTime(1990, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Sébastien",
                             LastName = "Pouliot",
-                            OwnerId = new Guid("2763d0d4-f0ff-4b96-9a3d-cd2fb21c9fa3")
+                            OwnerId = new Guid("facd7976-3397-4803-b27d-2352dca3a319")
                         });
                 });
 
@@ -171,15 +171,15 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2763d0d4-f0ff-4b96-9a3d-cd2fb21c9fa3"),
+                            Id = new Guid("facd7976-3397-4803-b27d-2352dca3a319"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e60411af-73b4-40cc-897a-fc5365be14c2",
+                            ConcurrencyStamp = "cc4b8223-4c4f-4f5c-98a4-3baeac561201",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "HLAPOINTE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJWeioBHvnsx1LVTtCq6cMHO8omBO9r0/gSxk76+2NZUkypi85tjDj/GeWLggzeLpw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEChQtposJHl7Z53BDFCo9fKzoijIedfGdM8VU7fCqOD1XeLyn/Ecg8T7YxEcad5mCA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c3eff2cd-02a9-4795-9947-56747089d8ff",
+                            SecurityStamp = "023b1f39-743d-4cc0-bd6a-a7cc86fd1127",
                             TwoFactorEnabled = false,
                             UserName = "hlapointe"
                         });
@@ -215,10 +215,17 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("74cd750a-0b66-407a-9bad-e4e744248cbf"),
-                            ConcurrencyStamp = "dade28d4-5abd-45b0-91d7-85d5102f522f",
+                            Id = new Guid("c8c2c5bb-ff10-48f6-a15e-e5d5e2e045b0"),
+                            ConcurrencyStamp = "6ce25c5d-97a0-47df-a1f9-fe59c74a9033",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("fa2ee9bf-669a-4ae0-b756-13b2b53be26a"),
+                            ConcurrencyStamp = "2d9bebf9-4bc3-4118-83f0-00a81e2fd8a4",
+                            Name = "Utilisateur",
+                            NormalizedName = "UTILISATEUR"
                         });
                 });
 
@@ -308,8 +315,8 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("2763d0d4-f0ff-4b96-9a3d-cd2fb21c9fa3"),
-                            RoleId = new Guid("74cd750a-0b66-407a-9bad-e4e744248cbf")
+                            UserId = new Guid("facd7976-3397-4803-b27d-2352dca3a319"),
+                            RoleId = new Guid("c8c2c5bb-ff10-48f6-a15e-e5d5e2e045b0")
                         });
                 });
 

@@ -22,17 +22,17 @@ public class ContactEditVM {
             RuleFor(vm => vm.FirstName)
                 .NotNull()
                     .WithMessage("Please provide a first name.")
-                .SetValidator(new ContactPropertyValidators.FirstNameValidator());
+                .SetValidator(new FirstNameValidator());
 
             RuleFor(vm => vm.LastName)
                 .NotNull()
                     .WithMessage("Please provde a last name.")
-                .SetValidator(new ContactPropertyValidators.LastNameValidator());
+                .SetValidator(new LastNameValidator());
 
             RuleFor(vm => vm.DateOfBirth)
                 .NotNull()
                     .WithMessage("Please provide a Date Of Birth.")
-                .SetValidator(new ContactPropertyValidators.BirthDateValidator());
+                .SetValidator(new BirthDateValidator());
         }
     }
 }

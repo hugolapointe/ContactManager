@@ -51,15 +51,15 @@ public class ContactController : Controller {
         }
 
         var toAdd = new Contact() {
-            FirstName = vm.FirstName,
-            LastName = vm.LastName,
-            DateOfBirth = vm.DateOfBirth.Value,
+            FirstName = vm.FirstName!,
+            LastName = vm.LastName!,
+            DateOfBirth = vm.DateOfBirth!.Value,
         };
         toAdd.Addresses.Add(new Address() {
-            StreetNumber = vm.Address_StreetNumber,
-            StreetName = vm.Address_StreetName,
-            CityName = vm.Address_CityName,
-            PostalCode = vm.Address_PostalCode,
+            StreetNumber = vm.Address_StreetNumber!.Value,
+            StreetName = vm.Address_StreetName!,
+            CityName = vm.Address_CityName!,
+            PostalCode = vm.Address_PostalCode!,
         });
 
         var user = await userManager.GetUserAsync(User);
@@ -97,9 +97,9 @@ public class ContactController : Controller {
         asserts.Exists(toEdit, "Contact not found.");
         asserts.IsOwnedByCurrentUser(toEdit, User);
 
-        toEdit.FirstName = vm.FirstName;
-        toEdit.LastName = vm.LastName;
-        toEdit.DateOfBirth = vm.DateOfBirth.Value;
+        toEdit.FirstName = vm.FirstName!;
+        toEdit.LastName = vm.LastName!;
+        toEdit.DateOfBirth = vm.DateOfBirth!.Value;
         context.SaveChanges();
 
         return RedirectToAction(nameof(Manage));

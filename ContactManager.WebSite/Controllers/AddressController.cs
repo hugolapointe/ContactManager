@@ -5,7 +5,6 @@ using ContactManager.WebSite.ViewModels;
 using ContactManager.WebSite.ViewModels.Address;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactManager.WebSite.Controllers;
@@ -30,7 +29,7 @@ public class AddressController : Controller {
 
         context.Entry(contact).Collection(c => c.Addresses).Load();
 
-        var addresses = contact.Addresses
+        var addresses = contact!.Addresses
             .Select(address => new AddressDetailsVM() {
                 Id = address.Id,
                 StreetNumber = address.StreetNumber,
@@ -66,10 +65,10 @@ public class AddressController : Controller {
         asserts.IsOwnedByCurrentUser(contact, User);
 
         Address toAdd = new Address() {
-            StreetNumber = vm.StreetNumber,
-            StreetName = vm.StreetName,
-            CityName = vm.CityName,
-            PostalCode = vm.PostalCode,
+            StreetNumber = vm.StreetNumber!.Value,
+            StreetName = vm.StreetName!,
+            CityName = vm.CityName!,
+            PostalCode = vm.PostalCode!,
         };
         contact.Addresses.Add(toAdd);
         context.SaveChanges();
@@ -85,7 +84,7 @@ public class AddressController : Controller {
         context.Entry(toEdit).Reference(a => a.Contact).Load();
 
         asserts.Exists(toEdit.Contact, "Contact not found.");
-        asserts.IsOwnedByCurrentUser(toEdit.Contact, User);
+        asserts.IsOwnedByCurrentUser(toEdit!.Contact, User);
 
         var vm = new AddressEditVM() {
             StreetNumber = toEdit.StreetNumber,
@@ -116,10 +115,10 @@ public class AddressController : Controller {
         asserts.Exists(toEdit.Contact, "Contact not found.");
         asserts.IsOwnedByCurrentUser(toEdit.Contact, User);
 
-        toEdit.StreetNumber = vm.StreetNumber;
-        toEdit.StreetName = vm.StreetName;
-        toEdit.CityName = vm.CityName;
-        toEdit.PostalCode = vm.PostalCode;
+        toEdit.StreetNumber = vm.StreetNumber!.Value;
+        toEdit.StreetName = vm.StreetName!;
+        toEdit.CityName = vm.CityName!;
+        toEdit.PostalCode = vm.PostalCode!;
         context.SaveChanges();
 
         return RedirectToAction(nameof(Manage),

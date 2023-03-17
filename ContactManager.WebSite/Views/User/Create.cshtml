@@ -1,4 +1,7 @@
-﻿@model UserCreateVM
+﻿@using Microsoft.AspNetCore.Identity
+
+@model UserCreateVM
+@inject RoleManager<IdentityRole<Guid>> roleManager
 
 @{
     ViewData["Title"] = "User Creation";
@@ -7,7 +10,7 @@
 <h1>User Creation</h1>
 
 <div class="mt-2 mb-2">
-    @Html.ActionLink("Manage", "Manage",
+    @Html.ActionLink("Back", "Manage",
     new {}, new { @class = "btn btn-secondary" })
 </div>
 
@@ -23,19 +26,29 @@
 
             <div class="form-group">
                 <label asp-for="RoleId"></label>
-                <select asp-for="RoleId" asp-items="@(new SelectList(ViewBag.Roles, "Id", "Name"))" class="form-control"></select>
+                <select asp-for="RoleId" asp-items="@(new SelectList(roleManager.Roles, "Id", "Name"))" class="form-control"></select>
                 <span asp-validation-for="RoleId"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" value="@Model.Password"/>
+                <div class="input-group toggle-password">
+                    <input asp-for="Password" class="form-control" value="@Model.Password" />
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
                 <span asp-validation-for="Password"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="PasswordConfirmation"></label>
-                <input asp-for="PasswordConfirmation" class="form-control" value="@Model.PasswordConfirmation"/>
+                <div class="input-group toggle-password">
+                    <input asp-for="PasswordConfirmation" class="form-control" value="@Model.PasswordConfirmation" />
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                </div>
                 <span asp-validation-for="PasswordConfirmation"></span>
             </div>
 
@@ -48,6 +61,21 @@
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+ }
+
+<script>
+    function togglePasswordVisibility() {
+        const passwordButton = $(this);
+        const passwordInputs = passwordButton.siblings('input');
+        const isPasswordVisible = passwordButton.hasClass('active');
+
+        passwordButton.toggleClass('active');
+        passwordInputs.attr('type', isPasswordVisible ? 'password' : 'text');
     }
+
+    const visibilityButtons = $('.toggle-password button');
+    visibilityButtons.on('click', togglePasswordVisibility);
+    visibilityButtons.trigger('click');
+</script>
 }

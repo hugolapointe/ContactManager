@@ -1,4 +1,4 @@
-﻿using ContactManager.Core.Domain.Validators;
+﻿using ContactManager.Core.Domain.Validators.Identity;
 
 using FluentValidation;
 
@@ -14,30 +14,26 @@ public class UserCreateVM {
     public Guid RoleId { get; set; }
 
     [Display(Name = "Password")]
+    [DataType(DataType.Password)]
     public string? Password { get; set; }
 
     [Display(Name = "Password Confirmation")]
+    [DataType(DataType.Password)]
     public string? PasswordConfirmation { get; set; }
 
     public class Validator : AbstractValidator<UserCreateVM> {
         public Validator() {
             RuleFor(vm => vm.UserName)
-                .NotNull()
-                    .WithMessage("Please provide a UserName.")
-                .SetValidator(new IdentityValidators.UsernameValidator());
+                .SetValidator(new UsernameValidator());
 
             RuleFor(vm => vm.RoleId)
                 .NotEmpty()
                     .WithMessage("Please provide a RoleId.");
 
             RuleFor(vm => vm.Password)
-                .NotNull()
-                    .WithMessage("Please provide a Password.")
-                .SetValidator(new IdentityValidators.PasswordValidator());
+                .SetValidator(new PasswordValidator());
 
             RuleFor(vm => vm.PasswordConfirmation)
-                .NotNull()
-                    .WithMessage("Please provide a Password Confirmation.")
                 .Equal(vm => vm.Password)
                     .WithMessage("The password and confirmation password do not match.");
         }

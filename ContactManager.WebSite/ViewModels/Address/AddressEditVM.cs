@@ -8,7 +8,7 @@ namespace ContactManager.WebSite.ViewModels.Address;
 
 public class AddressEditVM {
     [Display(Name = "Street Number")]
-    public int StreetNumber { get; set; }
+    public int? StreetNumber { get; set; }
 
     [Display(Name = "Street Name")]
     public string? StreetName { get; set; }
@@ -22,22 +22,24 @@ public class AddressEditVM {
     public class Validator : AbstractValidator<AddressEditVM> {
         public Validator() {
             RuleFor(vm => vm.StreetNumber)
-                .SetValidator(new AddressPropertyValidators.StreetNumberValidator());
+                .NotNull()
+                    .WithMessage("Please provide a street number.")
+                .SetValidator(new StreetNumberValidator());
 
             RuleFor(vm => vm.StreetName)
                 .NotNull()
-                    .WithMessage("Please provide a Street Name.")
-                .SetValidator(new AddressPropertyValidators.StreetNameValidator());
+                    .WithMessage("Please provide a street name.")
+                .SetValidator(new StreetNameValidator());
 
             RuleFor(vm => vm.CityName)
                 .NotNull()
-                    .WithMessage("Please provide a City Name.")
-                .SetValidator(new AddressPropertyValidators.CityNameValidator());
+                    .WithMessage("Please provide a city name.")
+                .SetValidator(new CityNameValidator());
 
             RuleFor(vm => vm.PostalCode)
                 .NotNull()
-                    .WithMessage("Please provide a Postal Code.")
-                .SetValidator(new AddressPropertyValidators.PostalCodeValidator());
+                    .WithMessage("Please provide a postal code.")
+                .SetValidator(new PostalCodeValidator());
         }
     }
 }

@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@6.3.0",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "axios@1.3.4",
+      "destination": "wwwroot/axios/"
+    }
+  ]
+}

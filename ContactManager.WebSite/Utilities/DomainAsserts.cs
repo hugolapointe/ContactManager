@@ -23,9 +23,15 @@ public class DomainAsserts {
                 string errorMessage = "You must own the resource.") {
         var userId = userManager.GetUserId(user);
 
-        var userIdProperty = entity.GetType().GetProperty("UserId");
+        var ownerIdProp = entity.GetType().GetProperty("OwnerId");
 
-        if (userIdProperty is null || (userIdProperty.GetValue(entity) as string) != userId) {
+        if (ownerIdProp is null) {
+            throw new UnauthorizedAccessException(errorMessage);
+        }
+
+        var ownerIdValue = ownerIdProp.GetValue(entity);
+
+        if (Guid.Equals(ownerIdValue, userId)) {
             throw new UnauthorizedAccessException(errorMessage);
         }
     }

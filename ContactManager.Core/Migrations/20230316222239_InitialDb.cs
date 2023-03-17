@@ -183,7 +183,7 @@ namespace ContactManager.Core.Migrations
                     ContactId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StreetNumber = table.Column<int>(type: "int", nullable: false),
                     StreetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CityName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -200,27 +200,32 @@ namespace ContactManager.Core.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { new Guid("74cd750a-0b66-407a-9bad-e4e744248cbf"), "dade28d4-5abd-45b0-91d7-85d5102f522f", "Administrator", "ADMINISTRATOR" });
+                values: new object[] { new Guid("c8c2c5bb-ff10-48f6-a15e-e5d5e2e045b0"), "6ce25c5d-97a0-47df-a1f9-fe59c74a9033", "Administrator", "ADMINISTRATOR" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { new Guid("fa2ee9bf-669a-4ae0-b756-13b2b53be26a"), "2d9bebf9-4bc3-4118-83f0-00a81e2fd8a4", "Utilisateur", "UTILISATEUR" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("2763d0d4-f0ff-4b96-9a3d-cd2fb21c9fa3"), 0, "e60411af-73b4-40cc-897a-fc5365be14c2", null, false, false, null, null, "HLAPOINTE", "AQAAAAEAACcQAAAAEJWeioBHvnsx1LVTtCq6cMHO8omBO9r0/gSxk76+2NZUkypi85tjDj/GeWLggzeLpw==", null, false, "c3eff2cd-02a9-4795-9947-56747089d8ff", false, "hlapointe" });
+                values: new object[] { new Guid("facd7976-3397-4803-b27d-2352dca3a319"), 0, "cc4b8223-4c4f-4f5c-98a4-3baeac561201", null, false, false, null, null, "HLAPOINTE", "AQAAAAEAACcQAAAAEChQtposJHl7Z53BDFCo9fKzoijIedfGdM8VU7fCqOD1XeLyn/Ecg8T7YxEcad5mCA==", null, false, "023b1f39-743d-4cc0-bd6a-a7cc86fd1127", false, "hlapointe" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { new Guid("74cd750a-0b66-407a-9bad-e4e744248cbf"), new Guid("2763d0d4-f0ff-4b96-9a3d-cd2fb21c9fa3") });
+                values: new object[] { new Guid("c8c2c5bb-ff10-48f6-a15e-e5d5e2e045b0"), new Guid("facd7976-3397-4803-b27d-2352dca3a319") });
 
             migrationBuilder.InsertData(
                 table: "Contacts",
                 columns: new[] { "Id", "DateOfBirth", "FirstName", "LastName", "OwnerId" },
-                values: new object[] { new Guid("b921da57-5822-48be-9654-8813aa5f5d10"), new DateTime(1990, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sébastien", "Pouliot", new Guid("2763d0d4-f0ff-4b96-9a3d-cd2fb21c9fa3") });
+                values: new object[] { new Guid("b4b298b5-295f-4e7e-b441-faf642e3be6d"), new DateTime(1990, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), "Sébastien", "Pouliot", new Guid("facd7976-3397-4803-b27d-2352dca3a319") });
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "Id", "City", "ContactId", "PostalCode", "StreetName", "StreetNumber" },
-                values: new object[] { new Guid("b6206798-621c-4196-90f3-f2682cb9ecde"), "Saint-Hyacinthe", new Guid("b921da57-5822-48be-9654-8813aa5f5d10"), "J2S 1H9", "Boulevard Boullé", 3000 });
+                columns: new[] { "Id", "CityName", "ContactId", "PostalCode", "StreetName", "StreetNumber" },
+                values: new object[] { new Guid("56fef287-a86e-4bac-9ce8-afd7cb8a0e22"), "Saint-Hyacinthe", new Guid("b4b298b5-295f-4e7e-b441-faf642e3be6d"), "J2S 1H9", "Boulevard Boullé", 3000 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_ContactId",
