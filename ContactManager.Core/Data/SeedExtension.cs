@@ -8,30 +8,24 @@ namespace ContactManager.Core.Data {
         public static readonly PasswordHasher<User> PASSWORD_HASHER = new();
 
         public static void Seed(this ModelBuilder builder) {
-            var adminRole = AddRole(builder, "Administrator");
+            AddRoles(builder);
             _ = AddRole(builder, "Utilisateur");
             var hugoUser = AddUser(builder, "hlapointe", "Admin123!");
-            addUserToRole(builder, hugoUser, adminRole);
+            AssignRoleToUser(builder, hugoUser, adminRole);
             var cegepAddress = AddAddress(builder, 3000, "Boulevard Boullé", "Saint-Hyacinthe", "J2S 1H9");
             _ = AddContactWithDefaultAddressToUser(builder, "Sébastien", "Pouliot", cegepAddress, hugoUser);
         }
 
-        private static void addUserToRole(ModelBuilder builder, User hugoUser, IdentityRole<Guid> adminRole) {
+        private static void AssignRoleToUser(ModelBuilder builder, User hugoUser, IdentityRole<Guid> adminRole) {
             builder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid> {
                 UserId = hugoUser.Id,
                 RoleId = adminRole.Id,
             });
         }
 
-        private static IdentityRole<Guid> AddRole(ModelBuilder builder, string name) {
-            var newRole = new IdentityRole<Guid> {
-                Id = Guid.NewGuid(),
-                Name = name,
-                NormalizedName = name.ToUpper()
-            };
-            builder.Entity<IdentityRole<Guid>>().HasData(newRole);
-
-            return newRole;
+        private void IdentityRole<Guid> AddRoles(ModelBuilder builder) {
+            builder.Entity<IdentityRole<Guid>>().HasData(Roles.Administrator);
+            builder.Entity<IdentityRole<Guid>>().HasData(Roles.Administrator);
         }
 
         private static Contact AddContactWithDefaultAddressToUser(ModelBuilder builder,

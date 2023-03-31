@@ -2,11 +2,13 @@
 using ContactManager.WebSite.Utilities;
 using ContactManager.WebSite.ViewModels.User;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactManager.WebSite.Controllers;
 
+[Authorize(Roles = "Administrator")]
 public class UserController : Controller {
     private readonly UserManager<User> userManager;
     private readonly RoleManager<IdentityRole<Guid>> roleManager;
