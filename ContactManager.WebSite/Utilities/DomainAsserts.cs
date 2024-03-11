@@ -31,7 +31,7 @@ public class DomainAsserts {
 
         var ownerIdValue = ownerIdProp.GetValue(entity);
 
-        if (Guid.Equals(ownerIdValue, userId)) {
+        if (Equals(ownerIdValue, userId)) {
             throw new UnauthorizedAccessException(errorMessage);
         }
     }

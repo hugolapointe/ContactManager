@@ -2,25 +2,22 @@
 using ContactManager.WebSite.Utilities;
 using ContactManager.WebSite.ViewModels.User;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContactManager.WebSite.Controllers;
 
-public class UserController : Controller {
-    private readonly UserManager<User> userManager;
-    private readonly RoleManager<IdentityRole<Guid>> roleManager;
-    private readonly DomainAsserts asserts;
+[Authorize(Roles = "Administrator")]
+public class UserController(
+    UserManager<User> userManager,
+    RoleManager<IdentityRole<Guid>> roleManager,
+    DomainAsserts asserts) : Controller {
+    private readonly UserManager<User> userManager = userManager;
+    private readonly RoleManager<IdentityRole<Guid>> roleManager = roleManager;
+    private readonly DomainAsserts asserts = asserts;
 
-    public UserController(
-        UserManager<User> userManager,
-        RoleManager<IdentityRole<Guid>> roleManager,
-        DomainAsserts asserts) {
-        this.userManager = userManager;
-        this.roleManager = roleManager;
-        this.asserts = asserts;
-    }
-
+    [HttpGet]
     public async Task<IActionResult> Manage() {
         var vm = new List<UserDetailsVM>();
 
@@ -28,7 +25,7 @@ public class UserController : Controller {
             var userRoles = await userManager.GetRolesAsync(user);
             vm.Add(new UserDetailsVM {
                 Id = user.Id,
-                UserName = user.UserName,
+                UserName = user.UserName!.Trim(),
                 RoleName = userRoles.SingleOrDefault(string.Empty)
             });
         }
@@ -36,6 +33,7 @@ public class UserController : Controller {
         return View(vm);
     }
 
+    [HttpGet]
     public IActionResult Create() {
         var passwordGenerated = PasswordGenerator.Generate();
 
@@ -46,6 +44,7 @@ public class UserController : Controller {
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(UserCreateVM vm) {
         if (!ModelState.IsValid) {
             return View(vm);
@@ -74,6 +73,7 @@ public class UserController : Controller {
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ResetPassword(Guid id) {
         var user = await userManager.FindByIdAsync(id.ToString());
 
@@ -90,12 +90,13 @@ public class UserController : Controller {
         }
 
         return View(new ResetPasswordVM {
-            UserName = user.UserName,
+            UserName = user.UserName!,
             NewPassword = newPassword,
         });
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Remove(Guid id) {
         var user = await userManager.FindByIdAsync(id.ToString());
 
