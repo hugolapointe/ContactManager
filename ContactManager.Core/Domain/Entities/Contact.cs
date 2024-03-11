@@ -12,6 +12,7 @@ namespace ContactManager.Core.Domain.Entities {
         public DateTime DateOfBirth { get; set; }
 
         public int Age => (DateTime.Today - DateOfBirth).Days / DAYS_PER_YEAR;
+        public string FullName => $"{FirstName} {LastName}";
 
         // Navigation Properties
         [ForeignKey(nameof(OwnerId))]

@@ -10,15 +10,14 @@ namespace ContactManager.WebSite.Controllers;
 [Authorize]
 public class HomeController : Controller {
 
-    public IActionResult Index() {
-        return RedirectToAction("Manage", "Contact");
-    }
+    [HttpGet]
+    public IActionResult Index() => RedirectToAction("Manage", "Contact");
 
+    [HttpGet]
     [AllowAnonymous]
-    public IActionResult Privacy() {
-        return View();
-    }
+    public IActionResult Privacy() => View();
 
+    [HttpGet]
     [AllowAnonymous]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() {

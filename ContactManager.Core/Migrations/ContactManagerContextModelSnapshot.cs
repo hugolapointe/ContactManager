@@ -55,9 +55,9 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("56fef287-a86e-4bac-9ce8-afd7cb8a0e22"),
+                            Id = new Guid("89c83945-e558-4818-b5d1-02f7197968c7"),
                             CityName = "Saint-Hyacinthe",
-                            ContactId = new Guid("b4b298b5-295f-4e7e-b441-faf642e3be6d"),
+                            ContactId = new Guid("9bb52d03-0b1c-4e48-a790-d99827d369b8"),
                             PostalCode = "J2S 1H9",
                             StreetName = "Boulevard Boullé",
                             StreetNumber = 3000
@@ -93,11 +93,11 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b4b298b5-295f-4e7e-b441-faf642e3be6d"),
-                            DateOfBirth = new DateTime(1990, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Id = new Guid("9bb52d03-0b1c-4e48-a790-d99827d369b8"),
+                            DateOfBirth = new DateTime(1980, 2, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Sébastien",
                             LastName = "Pouliot",
-                            OwnerId = new Guid("facd7976-3397-4803-b27d-2352dca3a319")
+                            OwnerId = new Guid("cd82b7b2-5f7d-40ca-9df5-db5b55cda84e")
                         });
                 });
 
@@ -169,15 +169,15 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("facd7976-3397-4803-b27d-2352dca3a319"),
+                            Id = new Guid("cd82b7b2-5f7d-40ca-9df5-db5b55cda84e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cc4b8223-4c4f-4f5c-98a4-3baeac561201",
+                            ConcurrencyStamp = "915ea089-4615-412f-8859-1eb8b21f2827",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "HLAPOINTE",
-                            PasswordHash = "AQAAAAEAACcQAAAAEChQtposJHl7Z53BDFCo9fKzoijIedfGdM8VU7fCqOD1XeLyn/Ecg8T7YxEcad5mCA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIHHQrsYPKFCPV/izVZs3fy5EFtypUD7we/QkFQ5ZD/6T2DVcOLrGbItrefCvhwycQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "023b1f39-743d-4cc0-bd6a-a7cc86fd1127",
+                            SecurityStamp = "02a6542c-70d0-4265-a23b-ebddd839a906",
                             TwoFactorEnabled = false,
                             UserName = "hlapointe"
                         });
@@ -213,15 +213,13 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c8c2c5bb-ff10-48f6-a15e-e5d5e2e045b0"),
-                            ConcurrencyStamp = "6ce25c5d-97a0-47df-a1f9-fe59c74a9033",
+                            Id = new Guid("6524cb29-1bd9-4799-ba86-e77527a5d809"),
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = new Guid("fa2ee9bf-669a-4ae0-b756-13b2b53be26a"),
-                            ConcurrencyStamp = "2d9bebf9-4bc3-4118-83f0-00a81e2fd8a4",
+                            Id = new Guid("af15050f-66bb-448e-81e6-f313f4b9a5f9"),
                             Name = "Utilisateur",
                             NormalizedName = "UTILISATEUR"
                         });
@@ -313,8 +311,8 @@ namespace ContactManager.Core.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("facd7976-3397-4803-b27d-2352dca3a319"),
-                            RoleId = new Guid("c8c2c5bb-ff10-48f6-a15e-e5d5e2e045b0")
+                            UserId = new Guid("cd82b7b2-5f7d-40ca-9df5-db5b55cda84e"),
+                            RoleId = new Guid("6524cb29-1bd9-4799-ba86-e77527a5d809")
                         });
                 });
 
