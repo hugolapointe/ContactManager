@@ -10,17 +10,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContactManager.WebSite.Controllers;
 
 [Authorize]
-public class AddressController : Controller {
-    private readonly ContactManagerContext context;
-    private readonly DomainAsserts asserts;
+public class AddressController(
+    ContactManagerContext context,
+    DomainAsserts asserts) : Controller {
+    private readonly ContactManagerContext context = context;
+    private readonly DomainAsserts asserts = asserts;
 
-    public AddressController(
-        ContactManagerContext context,
-        DomainAsserts asserts) {
-        this.context = context;
-        this.asserts = asserts;
-    }
-
+    [HttpGet]
     public IActionResult Manage(Guid contactId) {
         var contact = context.Contacts.Find(contactId);
 
@@ -39,9 +35,11 @@ public class AddressController : Controller {
             });
 
         ViewBag.ContactId = contactId;
+        ViewBag.ContactFullName = contact.FullName;
         return View(addresses);
     }
 
+    [HttpGet]
     public IActionResult Create(Guid contactId) {
         var contact = context.Contacts.Find(contactId);
 
@@ -53,6 +51,7 @@ public class AddressController : Controller {
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Create(Guid contactId, AddressCreateVM vm) {
         if (!ModelState.IsValid) {
             ViewBag.ContactId = contactId;
@@ -76,6 +75,7 @@ public class AddressController : Controller {
         return RedirectToAction(nameof(Manage), new { contactId });
     }
 
+    [HttpGet]   
     public IActionResult Edit(Guid id) {
         var toEdit = context.Addresses.Find(id);
 
@@ -125,6 +125,7 @@ public class AddressController : Controller {
             new { contactId = toEdit.Contact.Id });
     }
 
+    [HttpGet]
     public IActionResult Remove(Guid id) {
         var toRemove = context.Addresses.Find(id);
 

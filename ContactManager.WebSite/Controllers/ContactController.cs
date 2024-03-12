@@ -10,26 +10,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContactManager.WebSite.Controllers;
 
 [Authorize]
-public class ContactController : Controller {
-    private readonly ContactManagerContext context;
-    private readonly UserManager<User> userManager;
-    private readonly DomainAsserts asserts;
+public class ContactController(
+    ContactManagerContext context,
+    UserManager<User> userManager,
+    DomainAsserts asserts) : Controller {
+    private readonly ContactManagerContext context = context;
+    private readonly UserManager<User> userManager = userManager;
+    private readonly DomainAsserts asserts = asserts;
 
-    public ContactController(
-        ContactManagerContext context,
-        UserManager<User> userManager,
-        DomainAsserts asserts) {
-        this.context = context;
-        this.userManager = userManager;
-        this.asserts = asserts;
-    }
-
+    [HttpGet]
     public async Task<IActionResult> Manage() {
         var user = await userManager.GetUserAsync(User);
 
-        context.Entry(user).Collection(u => u.Contacts).Load();
+        context.Entry(user!).Collection(u => u.Contacts).Load();
 
-        var contacts = user.Contacts
+        var contacts = user!.Contacts
             .Select(contact => new ContactDetailsVM() {
                 Id = contact.Id,
                 FirstName = contact.FirstName,
@@ -40,11 +35,13 @@ public class ContactController : Controller {
         return View(contacts);
     }
 
+    [HttpGet]
     public IActionResult Create() {
         return View();
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(ContactCreateVM vm) {
         if (!ModelState.IsValid) {
             return View(vm);
@@ -63,12 +60,13 @@ public class ContactController : Controller {
         });
 
         var user = await userManager.GetUserAsync(User);
-        user.Contacts.Add(toAdd);
+        user!.Contacts.Add(toAdd);
         context.SaveChanges();
 
         return RedirectToAction(nameof(Manage));
     }
 
+    [HttpGet]
     public IActionResult Edit(Guid id) {
         var toEdit = context.Contacts.Find(id);
 
@@ -86,6 +84,7 @@ public class ContactController : Controller {
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Edit(Guid id, ContactEditVM vm) {
         if (!ModelState.IsValid) {
             ViewBag.Id = id;
@@ -105,6 +104,7 @@ public class ContactController : Controller {
         return RedirectToAction(nameof(Manage));
     }
 
+    [HttpGet]
     public IActionResult Remove(Guid id) {
         var toRemove = context.Contacts.Find(id);
 

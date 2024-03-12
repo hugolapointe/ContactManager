@@ -1,19 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ContactManager.Core.Domain.Entities {
-    public class Address {
+namespace ContactManager.Core.Domain.Entities;
 
-        public Guid Id { get; set; }
-        public Guid ContactId { get; set; }
+public class Address {
 
-        public int StreetNumber { get; set; }
-        public string StreetName { get; set; }
-        public string CityName { get; set; }
-        public string PostalCode { get; set; }
+    public Guid Id { get; set; }
+    public Guid ContactId { get; set; }
+
+    public required int StreetNumber { get; set; }
+    public required string StreetName { get; set; }
+    public required string CityName { get; set; }
+    public required string PostalCode { get; set; }
 
 
-        // Navigation Properties
-        [ForeignKey(nameof(ContactId))]
-        public virtual Contact? Contact { get; set; }
-    }
+    // Navigation Properties
+    [ForeignKey(nameof(ContactId))]
+    public virtual Contact? Contact { get; set; }
 }

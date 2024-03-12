@@ -8,50 +8,53 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContactManager.WebSite.Controllers;
 
 [Authorize]
-public class AccountController : Controller {
-    private readonly UserManager<User> userManager;
-    private readonly SignInManager<User> signInManager;
+public class AccountController(
+    UserManager<User> userManager,
+    SignInManager<User> signInManager) : Controller {
+    private readonly UserManager<User> userManager = userManager;
+    private readonly SignInManager<User> signInManager = signInManager;
 
-    public AccountController(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager) {
-        this.userManager = userManager;
-        this.signInManager = signInManager;
-    }
-
+    [HttpGet]
     [AllowAnonymous]
-    public IActionResult LogIn(string? returnUrl = "") {
+    public IActionResult LogIn(string? returnUrl = null) {
+
         ViewBag.ReturnUrl = returnUrl;
         return View();
     }
 
     [HttpPost]
     [AllowAnonymous]
-    public async Task<IActionResult> LogIn(LogInVM vm, string? returnUrl = "") {
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LogIn(LogInVM vm, string? returnUrl = null) {
         if (!ModelState.IsValid) {
             ViewBag.ReturnUrl = returnUrl;
             return View(vm);
         }
 
-        try {
-            var result = await signInManager.PasswordSignInAsync(
-                vm.UserName, vm.Password, vm.RememberMe, false);
+        var result = await signInManager.PasswordSignInAsync(
+            vm.UserName, vm.Password, isPersistent: vm.RememberMe, lockoutOnFailure: false);
 
-            if (!result.Succeeded) {
-                ModelState.AddModelError(string.Empty, "Log In Failed. Please try again.");
-                ViewBag.ReturnUrl = returnUrl;
-                return View(vm);
+        if (!result.Succeeded) {
+            if (result.IsNotAllowed) {
+                ModelState.AddModelError(string.Empty, "You are not allowed to log in.");
+            } else if (result.IsLockedOut) {
+                ModelState.AddModelError(string.Empty, "Your account is locked out.");
+            } else {
+                ModelState.AddModelError(string.Empty, "Invalid login failed.");
             }
 
-        } catch {
-            ModelState.AddModelError(string.Empty, "Something went wrong. Please try again.");
             ViewBag.ReturnUrl = returnUrl;
             return View(vm);
         }
 
-        return Redirect(returnUrl ?? Url.Action("Home", "Index"));
+        if (string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl)) {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return LocalRedirect(returnUrl);
     }
 
+    [HttpGet]
     [AllowAnonymous]
     public IActionResult Register() {
         return View();
@@ -84,6 +87,7 @@ public class AccountController : Controller {
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> LogOut() {
         await signInManager.SignOutAsync();
 
